@@ -1,2 +1,2 @@
-# Mitwelten TV Backend
+# Mitwelten TV Appliance
 Work in progress.
