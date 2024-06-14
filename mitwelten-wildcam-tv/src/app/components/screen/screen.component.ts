@@ -23,6 +23,8 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
   private loaders: Subscription[] = new Array(10);
   private images: HTMLImageElement[] = []; // the image preload / display stack
 
+  public currentImage = {object_name: '', time: ''};
+
   constructor(
     private ngZone: NgZone,
     private cd: ChangeDetectorRef,
@@ -219,6 +221,9 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
         this.loaders[loadIndex] = this.loadImage(loadIndex, this.stack[fetchIndex].object_name).subscribe();
         loadTexture(0, this.images[pos_1]);
         loadTexture(1, this.images[pos_2]);
+
+        this.currentImage.object_name = this.stack[stackIndex].object_name;
+        this.currentImage.time = this.stack[stackIndex].time;
         this.cd.detectChanges();
       }
 

@@ -20,9 +20,9 @@ canvas {
 #info {
   display: grid;
   position: fixed;
-  top: 72px;
+  top: 120px;
   right: 10px;
-  width: 120px;
+  width: auto;
   row-gap: 8px;
   grid-template-rows: 1fr 1fr 1fr 1fr;
 }
@@ -31,6 +31,15 @@ canvas {
   background-color: rgba(255, 255, 255, 0.67);
   padding: 4px;
   border-radius: 4px;
+}
+
+#timestamp {
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  width: auto;
+  text-shadow: 0 0 9px black, 0 0 4px black;
+  color: white;
 }
 
 #dbgimg {
