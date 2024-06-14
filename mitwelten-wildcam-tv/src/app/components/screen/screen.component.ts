@@ -18,6 +18,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
   screen?: ElementRef<HTMLCanvasElement>;
 
   private preLoadCount = 10;
+  private initialised = false;
   private destroy = new Subject();
   private stack: StackImage[] = []; // urls / meta info for all images in selection
   private loaders: Subscription[] = new Array(10);
@@ -61,7 +62,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
             // }
             // initialise WebGL context
             this.ngZone.runOutsideAngular(() => {
-              this.initContext();
+              if (!this.initialised) this.initContext();
             });
           }
         });
