@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ReplaySubject } from 'rxjs';
-import { ImageStack } from '../shared/image-stack.type';
 import { StackImage } from '../shared/stack-image.type';
 import { HttpClient } from '@angular/common/http';
+import { StackQuery } from '../shared/stack-query.type';
 
 
 @Injectable({
@@ -24,6 +24,7 @@ import { HttpClient } from '@angular/common/http';
 export class StackService {
 
   public stack: ReplaySubject<StackImage[]> = new ReplaySubject<StackImage[]>();
+  public loading: ReplaySubject<boolean> = new ReplaySubject<boolean>();
 
   selectionCriteria: FormGroup = new FormGroup({
     deployment:    new FormControl<number|null>(null), // deployment id
@@ -36,6 +37,7 @@ export class StackService {
         phase_end:   new FormControl<number>(24), // in hours
       }),
     ]),
+    framerate:     new FormControl<number>(1), // in frames per second
   });
 
   constructor(
@@ -50,10 +52,21 @@ export class StackService {
   }
 
   loadStack(): void {
-    // this.dataService.getImageStack(this.selectionCriteria.value).subscribe((stack: any) => {
-    //   this.stack.next(stack);
-    // });
-    this.loadJsonFile();
+    const query = this.selectionCriteria.value;
+    const translatedQuery: StackQuery = {
+      deployment_id: query.deployment,
+      period: {
+        start: query.period_start?.toISOString(),
+        end: query.period_end?.toISOString()
+      },
+      interval: query.interval,
+    };
+    this.loading.next(true);
+    this.dataService.getImageStack(translatedQuery).subscribe((stack: any) => {
+      this.stack.next(stack);
+      this.loading.next(false);
+    });
+    // this.loadJsonFile();
   }
 
   loadJsonFile(): void {

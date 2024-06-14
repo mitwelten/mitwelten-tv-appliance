@@ -90,6 +90,9 @@
             "scripts": []
           }
         }
+      },
+      "i18n": {
+        "sourceLocale": "de-CH"
       }
     }
   }

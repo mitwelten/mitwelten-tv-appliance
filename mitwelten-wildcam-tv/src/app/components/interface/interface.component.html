@@ -1,0 +1,90 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <h2 mat-dialog-title cdkDragHandle>WildCam TV</h2>
+  <mat-dialog-content>
+
+    <mat-form-field style="width: 50%; margin-top: 16px;">
+      <mat-label>Filet Stücke</mat-label>
+      <mat-select (selectionChange)="select($event.value)" >
+        @for (selection of selections; track selection) {
+          <mat-option [value]="selection">{{selection.title}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <form [formGroup]="stackService.selectionCriteria">
+
+      <mat-form-field>
+        <mat-label>Deployment</mat-label>
+        <mat-select formControlName="deployment">
+          @for (deployment of deployments; track deployment) {
+            <mat-option [value]="deployment.deployment_id">{{deployment.label}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Von</mat-label>
+        <input matInput [matDatepicker]="pickerFrom" formControlName="period_start">
+        <mat-hint>MM.DD.YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFrom></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Bis</mat-label>
+        <input matInput [matDatepicker]="pickerTo" formControlName="period_end">
+        <mat-hint>MM.DD.YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTo></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Tag/Nacht</mat-label>
+        <mat-select>
+          <mat-option value="all">alle</mat-option>
+          <mat-option value="day">Tag</mat-option>
+          <mat-option value="nigh">Nacht</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Intervall</mat-label>
+        <mat-select formControlName="interval">
+          @for (interval of intervals; track interval) {
+            <mat-option [value]="interval.seconds">{{interval.label}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Framerate</mat-label>
+        <mat-select formControlName="framerate">
+          @for (framerate of framerates; track framerate) {
+            <mat-option [value]="framerate.rate">{{framerate.label}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+
+    @if (stackService.loading | async) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    } @else {
+      <div>
+        @if (stackSize > 0) {
+          {{stackSize}} Images found
+        } @else {
+          No Images found
+        }
+      </div>
+    }
+
+    <!-- <pre>
+      {{stackService.selectionCriteria.value | json}}
+    </pre> -->
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button color="accent" mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</div>

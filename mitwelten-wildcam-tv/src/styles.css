@@ -7,3 +7,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 100%;
   border: 1px solid black;
 }
+
+:root {
+  --mdc-dialog-container-color: rgba(255, 255, 255, 0.75);
+}
