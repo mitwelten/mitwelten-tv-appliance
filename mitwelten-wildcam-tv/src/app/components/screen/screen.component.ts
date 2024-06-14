@@ -19,6 +19,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private preLoadCount = 10;
   private initialised = false;
+  private stackChanged = true;
   private destroy = new Subject();
   private stack: StackImage[] = []; // urls / meta info for all images in selection
   private loaders: Subscription[] = new Array(10);
@@ -45,6 +46,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
     // try later: maybe move the array into the stack service, instead of storing in this.stack
     this.stackService.stack.pipe(takeUntil(this.destroy)).subscribe((stack) => {
       this.stack = stack;
+      this.stackChanged = true;
       // this.glFrames = this.stack.length; // bring this back once testing is done, stack is subject to change
 
       const initIndex = 1;
@@ -203,6 +205,15 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
     }
 
     const render = (time: number) => {
+      if (this.stackChanged) { // reset animation when new stack is loaded
+        stackIndex = 0;
+        lastIndex = -1;
+        fetchIndex = 0;
+        fade = 0;
+        glFrame = 0;
+        startTime = undefined;
+        this.stackChanged = false;
+      }
       if (startTime === undefined) startTime = time;
       // const progress = (time - startTime) / 250.; // test with time instead of frame
       const progress = glFrame / 30.;
