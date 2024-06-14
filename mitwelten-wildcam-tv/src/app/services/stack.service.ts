@@ -43,9 +43,10 @@ export class StackService {
     private http: HttpClient
   ) {
     this.selectionCriteria.valueChanges.subscribe(() => {
-      this.loadStack();
+      if (this.selectionCriteria.valid) {
+        this.loadStack();
+      }
     });
-    this.loadStack();
   }
 
   loadStack(): void {
