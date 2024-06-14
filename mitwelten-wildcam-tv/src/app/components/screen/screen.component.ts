@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, filter, switchMap, takeUntil } from 'rxjs';
 import { StackService } from '../../services/stack.service';
 import { StackImage } from '../../shared/stack-image.type';
 import { DataService } from '../../services/data.service';
@@ -44,7 +44,10 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngAfterViewInit(): void {
     // try later: maybe move the array into the stack service, instead of storing in this.stack
-    this.stackService.stack.pipe(takeUntil(this.destroy)).subscribe((stack) => {
+    this.stackService.stack.pipe(
+      takeUntil(this.destroy),
+      filter(stack => stack.length > 0),
+    ).subscribe((stack) => {
       this.stack = stack;
       this.stackChanged = true;
       // this.glFrames = this.stack.length; // bring this back once testing is done, stack is subject to change
