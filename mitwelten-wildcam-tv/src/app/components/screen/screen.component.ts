@@ -201,8 +201,8 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
 
     const render = (time: number) => {
       if (startTime === undefined) startTime = time;
-      const progress = (time - startTime) / 250.; // test with time instead of frame
-      // const progress = glFrame / 30.; // test with time instead of frame
+      // const progress = (time - startTime) / 250.; // test with time instead of frame
+      const progress = glFrame / 30.;
       stackIndex = Math.floor(progress);
       fade = progress % 1.;
       const pos_1 = (stackIndex + 4) % 10;
