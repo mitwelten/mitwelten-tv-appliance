@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, distinctUntilChanged, tap } from 'rxjs';
 import { StackImage } from '../shared/stack-image.type';
 import { HttpClient } from '@angular/common/http';
 import { StackQuery } from '../shared/stack-query.type';
@@ -24,6 +24,7 @@ import { StackQuery } from '../shared/stack-query.type';
 export class StackService {
 
   public stack: ReplaySubject<StackImage[]> = new ReplaySubject<StackImage[]>();
+  public framerate: ReplaySubject<number> = new ReplaySubject<number>(1);
   public loading: ReplaySubject<boolean> = new ReplaySubject<boolean>();
 
   selectionCriteria: FormGroup = new FormGroup({
@@ -44,7 +45,16 @@ export class StackService {
     private dataService: DataService,
     private http: HttpClient
   ) {
-    this.selectionCriteria.valueChanges.subscribe(() => {
+    this.selectionCriteria.valueChanges.pipe(
+      tap(() => {
+        this.framerate.next(this.selectionCriteria.value.framerate);
+      }),
+      distinctUntilChanged((a, b) => {
+        const { framerate: framerateA, ...restA } = a;
+        const { framerate: framerateB, ...restB } = b;
+        return JSON.stringify(restA) === JSON.stringify(restB);
+      })
+    ).subscribe(() => {
       if (this.selectionCriteria.valid) {
         this.loadStack();
       }
