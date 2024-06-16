@@ -62,11 +62,14 @@ export class StackService {
       interval: query.interval,
     };
     this.loading.next(true);
-    this.dataService.getImageStack(translatedQuery).subscribe((stack: any) => {
-      this.stack.next(stack);
-      this.loading.next(false);
-    });
-    // this.loadJsonFile();
+    this.dataService.getImageStack(translatedQuery).subscribe({
+      next: (stack) => {
+        this.loading.next(false);
+        this.stack.next(stack);
+      },
+      error: () => {
+        this.loading.next(false);
+      }});
   }
 
   loadJsonFile(): void {

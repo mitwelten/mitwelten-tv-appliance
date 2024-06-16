@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StackQuery } from '../shared/stack-query.type';
+import { StackImage } from '../shared/stack-image.type';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class DataService {
   constructor(private readonly http: HttpClient) { }
 
   public getImageStack(selection: StackQuery) {
-    return this.http.post(`${this.apiUrl}/tv/stack-selection/`, selection);
+    return this.http.post<StackImage[]>(`${this.apiUrl}/tv/stack-selection/`, selection);
   }
 
   public getImageResource(url: string) {
