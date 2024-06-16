@@ -70,8 +70,8 @@ export class InterfaceComponent implements OnInit {
     },
     { // total images: 335
       deployment: 1901,
-      period_start: new Date('2023-04-25'),
-      period_end: new Date('2023-07-06'),
+      period_start: new Date('2023-08-23'), // new Date('2023-04-25'),
+      period_end: new Date('2023-11-03'), // new Date('2023-07-06'),
       title: 'Dreispitz: Cargo-Wagen Richtung Bruderholz',
       framerate: 2,
       interval: undefined,
