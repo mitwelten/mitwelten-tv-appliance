@@ -20,6 +20,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
   private preLoadCount = 10;
   private initialised = false;
   private stackChanged = true;
+  private framerate = 1; // images per second
   private destroy = new Subject();
   private stack: StackImage[] = []; // urls / meta info for all images in selection
   private loaders: Subscription[] = new Array(10);
@@ -40,7 +41,13 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.stackService.framerate.pipe(
+      takeUntil(this.destroy),
+    ).subscribe(framerate => {
+      this.framerate = framerate;
+    });
+  }
 
   ngAfterViewInit(): void {
     // try later: maybe move the array into the stack service, instead of storing in this.stack
@@ -219,7 +226,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       }
       if (startTime === undefined) startTime = time;
       // const progress = (time - startTime) / 250.; // test with time instead of frame
-      const progress = glFrame / 30.;
+      const progress = glFrame / 60.;
       stackIndex = (Math.floor(progress) % this.stack.length);
       fade = progress % 1.;
       const pos_1 = (stackIndex + 4) % 10;
@@ -246,7 +253,8 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       // gl.uniform1f(u_contrast_location, Math.cos(progress/1000.) * 2.);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
       requestAnimationFrame(render);
-      glFrame++;
+      // TODO: adjust framerate based on delta to next image
+      glFrame += this.framerate;
     };
     requestAnimationFrame(render);
   }
