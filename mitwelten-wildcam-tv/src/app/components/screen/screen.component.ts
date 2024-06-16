@@ -220,14 +220,14 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       if (startTime === undefined) startTime = time;
       // const progress = (time - startTime) / 250.; // test with time instead of frame
       const progress = glFrame / 30.;
-      stackIndex = Math.floor(progress);
+      stackIndex = (Math.floor(progress) % this.stack.length);
       fade = progress % 1.;
       const pos_1 = (stackIndex + 4) % 10;
       const pos_2 = (stackIndex + 5) % 10;
       const load  = (stackIndex + 9) % 10;
 
       if (stackIndex !== lastIndex && this.stack.length) {
-        fetchIndex = stackIndex + 4;
+        fetchIndex = (stackIndex + 4) % this.stack.length;
         lastIndex = stackIndex;
         const loadIndex = load % 10;
         if (this.loaders[loadIndex] && !this.loaders[loadIndex].closed) {
