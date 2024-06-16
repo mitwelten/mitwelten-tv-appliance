@@ -270,7 +270,7 @@ export class InterfaceComponent implements OnInit {
     { rate: 1, label: '1/s' },
     { rate: 2, label: '2/s' },
     { rate: 5, label: '5/s' },
-    { rate: 10, label: '10s' },
+    { rate: 1/10, label: '10s' },
   ];
 
   select(selection: any): void {
