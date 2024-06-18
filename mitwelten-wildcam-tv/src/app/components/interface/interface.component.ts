@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatChipListbox, MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { StackService } from '../../services/stack.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -27,7 +28,8 @@ import { Subject, takeUntil } from 'rxjs';
     MatInputModule,
     MatProgressBarModule,
     ReactiveFormsModule,
-    DragDropModule
+    DragDropModule,
+    MatChipsModule,
   ],
   templateUrl: './interface.component.html',
   styleUrl: './interface.component.css'
@@ -36,6 +38,9 @@ export class InterfaceComponent implements OnInit {
 
   private destroy = new Subject();
   public stackSize = 0;
+
+  @ViewChildren(MatChipListbox)
+  listboxes?: QueryList<MatChipListbox>;
 
   constructor(
     public stackService: StackService,
@@ -281,7 +286,13 @@ export class InterfaceComponent implements OnInit {
         { phase_start: 0, phase_end: 24 },
       ],
     },
-  ]
+  ];
+
+  selections_grouped = [
+    { selection: this.selections.filter(selection => selection.group === 'Dreispitz'), label: 'Dreispitz' },
+    { selection: this.selections.filter(selection => selection.group === 'Reinacher Heide'), label: 'Reinacher Heide' },
+    { selection: this.selections.filter(selection => selection.group === 'Merian Gärten'), label: 'Merian Gärten' },
+  ];
 
   deployments = [
     { deployment_id: 2808, label: 'Dreispitz: Cargo-Wagen im Zentrum' },
@@ -320,7 +331,16 @@ export class InterfaceComponent implements OnInit {
     { rate: 10, label: '10/s' },
   ];
 
-  select(selection: any): void {
-    this.stackService.selectionCriteria.patchValue(selection);
+  // select(selection: any): void {
+  //   this.stackService.selectionCriteria.patchValue(selection);
+  // }
+
+  select(change: MatChipListboxChange): void {
+    this.listboxes?.forEach(listbox => {
+      if (listbox !== change.source) {
+        listbox.value = [];
+      }
+    });
+    this.stackService.selectionCriteria.patchValue(change.value);
   }
 }

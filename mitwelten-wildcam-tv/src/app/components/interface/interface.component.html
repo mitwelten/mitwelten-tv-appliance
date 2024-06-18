@@ -2,6 +2,7 @@
   <h2 mat-dialog-title cdkDragHandle>WildCam TV</h2>
   <mat-dialog-content>
 
+    <!--
     <mat-form-field style="width: 50%; margin-top: 16px;">
       <mat-label>Filet Stücke</mat-label>
       <mat-select (selectionChange)="select($event.value)" >
@@ -10,6 +11,16 @@
         }
       </mat-select>
     </mat-form-field>
+    -->
+
+    @for (g of selections_grouped; track g.label) {
+      <h3>{{g.label}}</h3>
+      <mat-chip-listbox (change)="select($event)" [id]="g.label">
+      @for (s of g.selection; track s.title) {
+        <mat-chip-option [value]="s">{{s.title}}</mat-chip-option>
+      }
+      </mat-chip-listbox>
+    }
 
     <form [formGroup]="stackService.selectionCriteria">
 
