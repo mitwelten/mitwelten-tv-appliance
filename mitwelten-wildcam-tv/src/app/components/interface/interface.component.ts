@@ -46,110 +46,143 @@ export class InterfaceComponent implements OnInit {
   }
 
   selections = [
-    { // total images: 499
+    {
       deployment: 2808,
       period_start: new Date('2023-12-19'),
       period_end: new Date('2024-03-14'),
-      title: 'Dreispitz: Cargo-Wagen im Zentrum',
+      title: 'Wagon Center',
+      title_de: 'Cargo-Wagen im Zentrum',
+      group: 'Dreispitz',
       framerate: 2,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 237
+    {
       deployment: 1901,
       period_start: new Date('2023-07-05'),
       period_end: new Date('2023-08-22'),
-      title: 'Dreispitz: Cargo-Wagen Richtung Bruderholz',
+      title: 'Wagon Periphery 1',
+      title_de: 'Cargo-Wagen Richtung Bruderholz 1',
+      group: 'Dreispitz',
       framerate: 2,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 335
+    {
       deployment: 1901,
-      period_start: new Date('2023-08-23'), // new Date('2023-04-25'),
-      period_end: new Date('2023-11-03'), // new Date('2023-07-06'),
-      title: 'Dreispitz: Cargo-Wagen Richtung Bruderholz',
+      period_start: new Date('2023-08-23'),
+      period_end: new Date('2023-11-03'),
+      title: 'Wagon Periphery 2',
+      title_de: 'Cargo-Wagen Richtung Bruderholz 2',
+      group: 'Dreispitz',
       framerate: 2,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 11821
+    {
+      deployment: 1901,
+      period_start: new Date('2023-11-03'),
+      period_end: new Date('2024-03-15'),
+      title: 'Wagon Periphery 3',
+      title_de: 'Cargo-Wagen Richtung Bruderholz 3',
+      group: 'Dreispitz',
+      framerate: 5,
+      interval: undefined,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
+    {
       deployment: 1132,
       period_start: new Date('2023-04-25'),
-      period_end: new Date('2023-05-10'),
-      title: 'Reinacher Heide: Fuchsbau',
+      period_end: new Date('2023-05-12'),
+      title: 'Foxhole',
+      title_de: 'Fuchsbau',
+      group: 'Reinacher Heide',
       framerate: 2,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 8864
+    {
       deployment: 273,
       period_start: new Date('2022-12-09'),
       period_end: new Date('2024-03-14'),
-      title: 'Reinacher Heide: Biber-Rutsche ',
+      title: 'Beaver Slide',
+      title_de: 'Biber-Rutsche',
+      group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 1364
+    {
       deployment: 1072,
       period_start: new Date('2023-02-14'),
       period_end: new Date('2023-04-24'),
-      title: 'Reinacher Heide: Trockenwiese',
+      title: 'Dry Grassland 1',
+      title_de: 'Trockenwiese',
+      group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 4979
+    {
       deployment: 974,
       period_start: new Date('2023-04-26'),
       period_end: new Date('2023-06-28'),
-      title: 'Reinacher Heide: Dorfbach',
+      title: 'Village Creek',
+      title_de: 'Dorfbach',
+      group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 17
-      deployment: -1,
-      period_start: new Date('2020-03-18'),
-      period_end: new Date('2020-03-27'),
-      title: 'Merian Gärten: Birs-Kanalinsel 1',
+    {
+      deployment: 3154,
+      period_start: new Date('2017-03-18'),
+      period_end: new Date('2017-03-27'),
+      title: 'Channel Island 1',
+      title_de: 'Birs-Kanalinsel 1',
+      group: 'Merian Gärten',
       framerate: 0.5,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 45
-      deployment: -1,
-      period_start: new Date('2020-07-24'),
-      period_end: new Date('2020-09-13'),
-      title: 'Merian Gärten: Birs-Kanalinsel 2',
+    {
+      deployment: 3171,
+      period_start: new Date('2019-07-24'),
+      period_end: new Date('2019-09-13'),
+      title: 'Channel Island 2',
+      title_de: 'Birs-Kanalinsel 2',
+      group: 'Merian Gärten',
       framerate: 0.5,
       interval: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
     },
-    { // total images: 25
-      deployment: -1,
+    {
+      deployment: 3188,
       period_start: new Date('2020-09-23'),
       period_end: new Date('2020-10-25'),
-      title: 'Merian Gärten: Birs-Kanalinsel 3',
+      title: 'Channel Island 3',
+      title_de: 'Birs-Kanalinsel 3',
+      group: 'Merian Gärten',
       framerate: 0.5,
       interval: undefined,
       phases: [
@@ -160,18 +193,9 @@ export class InterfaceComponent implements OnInit {
       deployment: 883,
       period_start: new Date('2023-04-21'),
       period_end: new Date('2023-06-24'),
-      title: 'Merian Gärten/Dreispitz?: Blumentopf einer Bestäuber-Installation',
-      framerate: 10,
-      interval: undefined,
-      phases: [
-        { phase_start: 0, phase_end: 24 },
-      ],
-    },
-    {
-      deployment: -1,
-      period_start: new Date('2022-05-12'),
-      period_end: new Date('2022-08-09'),
-      title: 'Dreispitz: Blumentopf einer Bestäuber-Installation',
+      title: 'Pollinator Flowerpot 1',
+      title_de: 'Blumentopf einer Bestäuber-Installation',
+      group: 'Merian Gärten',
       framerate: 10,
       interval: undefined,
       phases: [
@@ -180,9 +204,25 @@ export class InterfaceComponent implements OnInit {
     },
     {
       deployment: 24,
+      period_start: new Date('2022-05-12'),
+      period_end: new Date('2022-08-09'),
+      title: 'Pollinator Flowerpot 2',
+      title_de: 'Blumentopf einer Bestäuber-Installation',
+      group: 'Merian Gärten',
+      framerate: 10,
+      interval: undefined,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
+
+    {
+      deployment: 24,
       period_start: new Date('2022-08-12'),
       period_end: new Date('2022-08-28'),
-      title: 'Dreispitz: Veloparking-Dach',
+      title: 'Bike Parking Roof',
+      title_de: 'Veloparking-Dach',
+      group: 'Dreispitz',
       framerate: 10,
       interval: undefined,
       phases: [
@@ -193,7 +233,9 @@ export class InterfaceComponent implements OnInit {
       deployment: 67,
       period_start: new Date('2022-08-15'),
       period_end: new Date('2022-08-28'),
-      title: 'Dreispitz: Güterverkehr-Gleise',
+      title: 'Closed Railway Tracks',
+      title_de: 'Güterverkehr-Gleise',
+      group: 'Dreispitz',
       framerate: 10,
       interval: undefined,
       phases: [
@@ -201,10 +243,12 @@ export class InterfaceComponent implements OnInit {
       ],
     },
     {
-      deployment: -1,
+      deployment: 820,
       period_start: new Date('2023-04-04'),
       period_end: new Date('2023-09-07'),
-      title: 'Reinacher Heide: Erlebnisweiher ',
+      title: 'Discovery Pond 1',
+      title_de: 'Erlebnisweiher 1',
+      group: 'Reinacher Heide',
       framerate: 10,
       interval: undefined,
       phases: [
@@ -212,10 +256,12 @@ export class InterfaceComponent implements OnInit {
       ],
     },
     {
-      deployment: -1,
+      deployment: 829,
       period_start: new Date('2023-04-04'),
       period_end: new Date('2023-06-26'),
-      title: 'Reinacher Heide: Erlebnisweiher ',
+      title: 'Discovery Pond 2',
+      title_de: 'Erlebnisweiher 2',
+      group: 'Reinacher Heide',
       framerate: 10,
       interval: undefined,
       phases: [
@@ -223,10 +269,12 @@ export class InterfaceComponent implements OnInit {
       ],
     },
     {
-      deployment: -1,
+      deployment: 824,
       period_start: new Date('2023-04-04'),
       period_end: new Date('2023-07-19'),
-      title: 'Reinacher Heide: Trockenwiese',
+      title: 'Dry Grassland 2',
+      title_de: 'Trockenwiese 2',
+      group: 'Reinacher Heide',
       framerate: 10,
       interval: undefined,
       phases: [
