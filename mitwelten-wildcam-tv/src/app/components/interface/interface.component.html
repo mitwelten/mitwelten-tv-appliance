@@ -24,7 +24,7 @@
 
     <form [formGroup]="stackService.selectionCriteria">
 
-      <mat-form-field>
+      <mat-form-field style="display: none;">
         <mat-label>Deployment</mat-label>
         <mat-select formControlName="deployment">
           @for (deployment of deployments; track deployment) {
