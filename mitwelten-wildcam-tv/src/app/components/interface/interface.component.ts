@@ -312,10 +312,12 @@ export class InterfaceComponent implements OnInit {
   ];
 
   framerates = [
+    { rate: 1/10, label: '10s' },
+    { rate: 1/2, label: '2s' },
     { rate: 1, label: '1/s' },
     { rate: 2, label: '2/s' },
     { rate: 5, label: '5/s' },
-    { rate: 1/10, label: '10s' },
+    { rate: 10, label: '10/s' },
   ];
 
   select(selection: any): void {
