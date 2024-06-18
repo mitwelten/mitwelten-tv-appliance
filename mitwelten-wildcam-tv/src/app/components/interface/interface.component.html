@@ -22,7 +22,7 @@
       </mat-chip-listbox>
     }
 
-    <form [formGroup]="stackService.selectionCriteria">
+    <form [formGroup]="stackService.selectionCriteria" #define_selection>
 
       <mat-form-field style="display: none;">
         <mat-label>Deployment</mat-label>
@@ -96,6 +96,7 @@
 
   </mat-dialog-content>
   <mat-dialog-actions>
+    <button color="accent" mat-button type="reset" (click)="define_selection.reset()">Reset</button>
     <button color="accent" mat-button mat-dialog-close>Close</button>
   </mat-dialog-actions>
 </div>
