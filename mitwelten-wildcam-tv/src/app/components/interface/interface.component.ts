@@ -119,7 +119,7 @@ export class InterfaceComponent implements OnInit {
     {
       deployment: 273,
       period_start: new Date('2022-12-09'),
-      period_end: new Date('2024-03-14'),
+      period_end: new Date('2024-06-01'),
       title: 'Beaver Slide',
       title_de: 'Biber-Rutsche',
       group: 'Reinacher Heide',
@@ -286,6 +286,58 @@ export class InterfaceComponent implements OnInit {
         { phase_start: 0, phase_end: 24 },
       ],
     },
+    {
+      deployment: 1184,
+      period_start: new Date('2023-04-25'),
+      period_end: new Date('2023-06-27'),
+      title: 'Dry Grassland 3',
+      title_de: 'Trockenwiese 3',
+      group: 'Reinacher Heide',
+      framerate: 1,
+      interval: undefined,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
+    {
+      deployment: 1880,
+      period_start: new Date('2023-07-05'),
+      period_end: new Date('2023-07-08'),
+      title: 'Wagon Center 2',
+      title_de: 'Cargowagen InsektenKiosk',
+      group: 'Dreispitz',
+      framerate: 1,
+      interval: undefined,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
+    {
+      deployment: 202,
+      period_start: new Date('2022-12-12'),
+      period_end: new Date('2022-12-29'),
+      title: 'Wild Crossing 1',
+      title_de: 'Wildwechsel 1',
+      group: 'Reinacher Heide',
+      framerate: 1,
+      interval: undefined,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
+    {
+      deployment: 344,
+      period_start: new Date('2023-01-09'),
+      period_end: new Date('2023-02-13'),
+      title: 'Wild Crossing 2',
+      title_de: 'Wildwechsel 2',
+      group: 'Reinacher Heide',
+      framerate: 1,
+      interval: undefined,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
   ];
 
   selections_grouped = [
@@ -310,6 +362,10 @@ export class InterfaceComponent implements OnInit {
     { deployment_id: 820,  label: 'Reinacher Heide: Erlebnisweiher' },
     { deployment_id: 829,  label: 'Reinacher Heide: Erlebnisweiher' },
     { deployment_id: 824,  label: 'Reinacher Heide: Trockenwiese' },
+    { deployment_id: 1184, label: 'Reinacher Heide: Trockenwiese' },
+    { deployment_id: 1880, label: 'Dreispitz: Cargowagen InsektenKiosk' },
+    { deployment_id: 202,  label: 'Reinacher Heide: Wildwechsel 1' },
+    { deployment_id: 344,  label: 'Reinacher Heide: Wildwechsel 2' },
   ];
 
   intervals = [
