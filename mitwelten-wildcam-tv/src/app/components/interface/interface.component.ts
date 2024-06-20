@@ -360,6 +360,34 @@ export class InterfaceComponent implements OnInit {
         { phase_start: 0, phase_end: 24 },
       ],
     },
+    {
+      deployment: 3203,
+      period_start: new Date('2022-07-22'),
+      period_end: new Date('2022-07-23'),
+      title: 'Lizzards',
+      title_de: 'Eidechsen',
+      group: 'Dreispitz',
+      framerate: 10,
+      interval: undefined,
+      phase: undefined,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
+    {
+      deployment: 2882,
+      period_start: new Date('2022-03-23'),
+      period_end: new Date('2022-03-23'),
+      title: 'Lizzards',
+      title_de: 'Eidgechsen',
+      group: 'Merian Gärten',
+      framerate: 10,
+      interval: undefined,
+      phase: undefined,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
   ];
 
   selections_grouped = [
