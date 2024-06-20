@@ -60,6 +60,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Dreispitz',
       framerate: 2,
       interval: undefined,
+      phase: 'night',
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -73,6 +74,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Dreispitz',
       framerate: 2,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -86,6 +88,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Dreispitz',
       framerate: 2,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -99,6 +102,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Dreispitz',
       framerate: 5,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -112,6 +116,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Reinacher Heide',
       framerate: 2,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -125,6 +130,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -138,6 +144,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -151,6 +158,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -164,6 +172,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Merian Gärten',
       framerate: 0.5,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -177,6 +186,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Merian Gärten',
       framerate: 0.5,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -190,6 +200,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Merian Gärten',
       framerate: 0.5,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -201,8 +212,9 @@ export class InterfaceComponent implements OnInit {
       title: 'Pollinator Flowerpot 1',
       title_de: 'Blumentopf einer Bestäuber-Installation',
       group: 'Merian Gärten',
-      framerate: 10,
-      interval: undefined,
+      framerate: 1,
+      interval: 3600,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -214,8 +226,9 @@ export class InterfaceComponent implements OnInit {
       title: 'Pollinator Flowerpot 2',
       title_de: 'Blumentopf einer Bestäuber-Installation',
       group: 'Merian Gärten',
-      framerate: 10,
-      interval: undefined,
+      framerate: 1,
+      interval: 3600,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -228,8 +241,9 @@ export class InterfaceComponent implements OnInit {
       title: 'Bike Parking Roof',
       title_de: 'Veloparking-Dach',
       group: 'Dreispitz',
-      framerate: 10,
-      interval: undefined,
+      framerate: 1,
+      interval: 3600,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -241,8 +255,9 @@ export class InterfaceComponent implements OnInit {
       title: 'Closed Railway Tracks',
       title_de: 'Güterverkehr-Gleise',
       group: 'Dreispitz',
-      framerate: 10,
-      interval: undefined,
+      framerate: 1,
+      interval: 3600,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -254,8 +269,9 @@ export class InterfaceComponent implements OnInit {
       title: 'Discovery Pond 1',
       title_de: 'Erlebnisweiher 1',
       group: 'Reinacher Heide',
-      framerate: 10,
-      interval: undefined,
+      framerate: 1,
+      interval: 3600,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -267,8 +283,9 @@ export class InterfaceComponent implements OnInit {
       title: 'Discovery Pond 2',
       title_de: 'Erlebnisweiher 2',
       group: 'Reinacher Heide',
-      framerate: 10,
-      interval: undefined,
+      framerate: 1,
+      interval: 3600,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -280,8 +297,9 @@ export class InterfaceComponent implements OnInit {
       title: 'Dry Grassland 2',
       title_de: 'Trockenwiese 2',
       group: 'Reinacher Heide',
-      framerate: 10,
-      interval: undefined,
+      framerate: 1,
+      interval: 3600,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -295,6 +313,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -308,6 +327,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Dreispitz',
       framerate: 1,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -321,6 +341,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -334,6 +355,7 @@ export class InterfaceComponent implements OnInit {
       group: 'Reinacher Heide',
       framerate: 1,
       interval: undefined,
+      phase: undefined,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],

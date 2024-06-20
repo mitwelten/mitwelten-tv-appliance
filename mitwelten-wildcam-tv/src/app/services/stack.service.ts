@@ -32,12 +32,13 @@ export class StackService {
     period_start:  new FormControl<Date|null>(null),
     period_end:    new FormControl<Date|null>(null),
     interval:      new FormControl<number>(1), // in seconds
-    phases:        new FormArray([
-      new FormGroup({
-        phase_start: new FormControl<number>(0),  // in hours
-        phase_end:   new FormControl<number>(24), // in hours
-      }),
-    ]),
+    phase:         new FormControl<'day'|'night'|null>(null),
+    // phases:        new FormArray([
+    //   new FormGroup({
+    //     phase_start: new FormControl<number>(0),  // in hours
+    //     phase_end:   new FormControl<number>(24), // in hours
+    //   }),
+    // ]),
     framerate:     new FormControl<number>(1), // in frames per second
   });
 
@@ -70,6 +71,7 @@ export class StackService {
         end: query.period_end?.toISOString()
       },
       interval: query.interval,
+      phase: query.phase,
     };
     this.loading.next(true);
     this.dataService.getImageStack(translatedQuery).subscribe({

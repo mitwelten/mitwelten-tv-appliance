@@ -5,4 +5,5 @@ export interface StackQuery {
     end: string;
   };
   interval: number;
+  phase: 'day'|'night'|null;
 }
