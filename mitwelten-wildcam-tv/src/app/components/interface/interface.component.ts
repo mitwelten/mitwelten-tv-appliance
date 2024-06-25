@@ -61,6 +61,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 2,
       interval: undefined,
       phase: 'night',
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -75,6 +76,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 2,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -89,6 +91,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 2,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -103,6 +106,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 5,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -117,6 +121,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 2,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -131,6 +136,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -145,6 +151,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -159,6 +166,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -173,6 +181,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 0.5,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -187,6 +196,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 0.5,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -201,6 +211,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 0.5,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -215,6 +226,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: 3600,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -229,6 +241,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: 3600,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -244,6 +257,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: 3600,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -258,6 +272,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: 3600,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -272,6 +287,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: 3600,
       phase: undefined,
+      landscape: false,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -286,6 +302,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: 3600,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -300,6 +317,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: 3600,
       phase: undefined,
+      landscape: false,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -314,6 +332,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -328,6 +347,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -342,6 +362,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -356,6 +377,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 1,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -370,6 +392,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 10,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],
@@ -384,6 +407,7 @@ export class InterfaceComponent implements OnInit {
       framerate: 10,
       interval: undefined,
       phase: undefined,
+      landscape: true,
       phases: [
         { phase_start: 0, phase_end: 24 },
       ],

@@ -21,6 +21,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
   private initialised = false;
   private stackChanged = true;
   private framerate = 1; // images per second
+  private landscape = true;
   private destroy = new Subject();
   private stack: StackImage[] = []; // urls / meta info for all images in selection
   private loaders: Subscription[] = new Array(10);
@@ -46,6 +47,11 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       takeUntil(this.destroy),
     ).subscribe(framerate => {
       this.framerate = framerate;
+    });
+    this.stackService.landscape.pipe(
+      takeUntil(this.destroy),
+    ).subscribe(landscape => {
+      this.landscape = landscape;
     });
   }
 
@@ -195,11 +201,17 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
     const u_texture_1_location = gl.getUniformLocation(prg, 'u_texture_1');
     const u_progress_location = gl.getUniformLocation(prg, 'u_progress');
     const u_contrast_location = gl.getUniformLocation(prg, 'u_contrast');
+    const u_rotate_location = gl.getUniformLocation(prg, 'u_rotate');
+    const u_scale_location = gl.getUniformLocation(prg, 'u_scale');
+    const u_offset_location = gl.getUniformLocation(prg, 'u_offset');
 
     gl.uniform1i(u_texture_0_location, 0);
     gl.uniform1i(u_texture_1_location, 1);
     gl.uniform1f(u_progress_location, 0.);
     gl.uniform1f(u_contrast_location, 0.);
+    gl.uniform1f(u_rotate_location, this.landscape ? 0.0 : 1.0);
+    gl.uniform1f(u_scale_location, Math.pow(1917 / 1440, 2)); // approx (16/9)^2
+    gl.uniform1f(u_offset_location, 1 - (1 / Math.pow(1917 / 1440, 2))); // = 1 - 1/u_scale, offset to upper edge
 
     let stackIndex = 0;
     let lastIndex = -1;
@@ -223,6 +235,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
         glFrame = 0;
         startTime = undefined;
         this.stackChanged = false;
+        gl.uniform1f(u_rotate_location, this.landscape ? 0.0 : 1.0);
       }
       if (startTime === undefined) startTime = time;
       // const progress = (time - startTime) / 250.; // test with time instead of frame
@@ -264,10 +277,19 @@ const VERTEX_SHADER_SOURCE = `
 attribute vec2 a_position;
 attribute vec2 a_texture_coordinate;
 
+uniform float u_rotate;
+uniform float u_scale;
+uniform float u_offset;
+
 varying vec2 v_texture_coordinate;
 
 void main() {
-  gl_Position = vec4(a_position, 0.0, 1.0);
+  vec2 position = a_position;
+  if(u_rotate > 0.5) { // assuming 1.0 for true, 0.0 for false
+    // offset and scale to fit rotated image
+    position = vec2(-a_position.y, (a_position.x-u_offset) * u_scale);
+  }
+  gl_Position = vec4(position, 0.0, 1.0);
   v_texture_coordinate = a_texture_coordinate;
 }
 `;

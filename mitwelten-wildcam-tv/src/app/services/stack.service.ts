@@ -25,6 +25,7 @@ export class StackService {
 
   public stack: ReplaySubject<StackImage[]> = new ReplaySubject<StackImage[]>();
   public framerate: ReplaySubject<number> = new ReplaySubject<number>(1);
+  public landscape: ReplaySubject<boolean> = new ReplaySubject<boolean>();
   public loading: ReplaySubject<boolean> = new ReplaySubject<boolean>();
 
   selectionCriteria: FormGroup = new FormGroup({
@@ -40,6 +41,7 @@ export class StackService {
     //   }),
     // ]),
     framerate:     new FormControl<number>(1), // in frames per second
+    landscape:     new FormControl<boolean>(true),
   });
 
   constructor(
@@ -49,10 +51,11 @@ export class StackService {
     this.selectionCriteria.valueChanges.pipe(
       tap(() => {
         this.framerate.next(this.selectionCriteria.value.framerate);
+        this.landscape.next(this.selectionCriteria.value.landscape);
       }),
       distinctUntilChanged((a, b) => {
-        const { framerate: framerateA, ...restA } = a;
-        const { framerate: framerateB, ...restB } = b;
+        const { framerate: framerateA, landscape: landscapeA, ...restA } = a;
+        const { framerate: framerateB, landscape: landscapeB, ...restB } = b;
         return JSON.stringify(restA) === JSON.stringify(restB);
       })
     ).subscribe(() => {
