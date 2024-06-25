@@ -284,8 +284,8 @@ export class InterfaceComponent implements OnInit {
       title: 'Discovery Pond 1',
       title_de: 'Erlebnisweiher 1',
       group: 'Reinacher Heide',
-      framerate: 1,
-      interval: 3600,
+      framerate: 2,
+      interval: 24*3600,
       phase: undefined,
       landscape: false,
       phases: [
@@ -299,8 +299,8 @@ export class InterfaceComponent implements OnInit {
       title: 'Discovery Pond 2',
       title_de: 'Erlebnisweiher 2',
       group: 'Reinacher Heide',
-      framerate: 1,
-      interval: 3600,
+      framerate: 2,
+      interval: 24*3600,
       phase: undefined,
       landscape: true,
       phases: [
@@ -314,8 +314,8 @@ export class InterfaceComponent implements OnInit {
       title: 'Dry Grassland 2',
       title_de: 'Trockenwiese 2',
       group: 'Reinacher Heide',
-      framerate: 1,
-      interval: 3600,
+      framerate: 2,
+      interval: 24*3600,
       phase: undefined,
       landscape: false,
       phases: [

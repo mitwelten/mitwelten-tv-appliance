@@ -305,10 +305,25 @@ uniform sampler2D u_texture_1;
 uniform float u_progress;
 uniform float u_contrast;
 
+float s_curve(float t) {
+  return t * t * (3.0 - 2.0 * t);
+}
+
+float inverted_s_curve(float t) {
+  return 0.5 + 4.0 * (t - 0.5) * (t - 0.5) * (t - 0.5);
+}
+
+float tan_s_curve(float t) {
+  return 0.5 + tan(2.0 * t - 1.0) / 3.0;
+}
+
 void main() {
   vec4 a = texture2D(u_texture_0, v_texture_coordinate);
   vec4 b = texture2D(u_texture_1, v_texture_coordinate);
-  vec3 color = mix(a, b, u_progress).rgb;
+
+  float t = tan_s_curve(u_progress);
+  vec3 color = mix(a, b, t).rgb;
+
   gl_FragColor = vec4(0.5 + (1.0 + u_contrast) * (color - 0.5), 1.0);
 }
 `;
