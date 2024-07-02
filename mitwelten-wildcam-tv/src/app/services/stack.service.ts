@@ -77,12 +77,7 @@ export class StackService {
       phase: query.phase,
     };
     this.loading.next(true);
-    this.dataService.getImageStack(translatedQuery).pipe(
-      map((stack) => stack.map(i => {
-        i.object_name = i.object_name.replace('.jpg', '.webp');
-        return i;
-      }))
-    ).subscribe({
+    this.dataService.getImageStack(translatedQuery).subscribe({
       next: (stack) => {
         this.loading.next(false);
         this.stack.next(stack);
