@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { ReplaySubject, distinctUntilChanged, tap } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ReplaySubject, distinctUntilChanged, map, tap } from 'rxjs';
 import { StackImage } from '../shared/stack-image.type';
 import { HttpClient } from '@angular/common/http';
 import { StackQuery } from '../shared/stack-query.type';
@@ -77,7 +77,12 @@ export class StackService {
       phase: query.phase,
     };
     this.loading.next(true);
-    this.dataService.getImageStack(translatedQuery).subscribe({
+    this.dataService.getImageStack(translatedQuery).pipe(
+      map((stack) => stack.map(i => {
+        i.object_name = i.object_name.replace('.jpg', '.webp');
+        return i;
+      }))
+    ).subscribe({
       next: (stack) => {
         this.loading.next(false);
         this.stack.next(stack);
