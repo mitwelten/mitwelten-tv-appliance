@@ -34,7 +34,7 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Von</mat-label>
+        <mat-label>Start</mat-label>
         <input matInput [matDatepicker]="pickerFrom" formControlName="period_start">
         <mat-hint>MM.DD.YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
@@ -42,7 +42,7 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Bis</mat-label>
+        <mat-label>End</mat-label>
         <input matInput [matDatepicker]="pickerTo" formControlName="period_end">
         <mat-hint>MM.DD.YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
@@ -50,16 +50,16 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Tag/Nacht</mat-label>
+        <mat-label>Day/Night</mat-label>
         <mat-select formControlName="phase">
-          <mat-option value="null">alle</mat-option>
-          <mat-option value="day">Tag</mat-option>
-          <mat-option value="night">Nacht</mat-option>
+          <mat-option value="null">both</mat-option>
+          <mat-option value="day">Day</mat-option>
+          <mat-option value="night">Night</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Intervall</mat-label>
+        <mat-label>Interval</mat-label>
         <mat-select formControlName="interval">
           @for (interval of intervals; track interval) {
             <mat-option [value]="interval.seconds">{{interval.label}}</mat-option>

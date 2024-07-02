@@ -459,12 +459,12 @@ export class InterfaceComponent implements OnInit {
 
   intervals = [
     { seconds: undefined, label: 'not fixed' },
-    { seconds: 15, label: '4/Minute' },
-    { seconds: 60, label: '1 Minute' },
-    { seconds: 600, label: '10 Minuten' },
-    { seconds: 3600, label: '1 Stunde' },
-    { seconds: 3600*24, label: '1 Tag' },
-    { seconds: 3600*24*7, label: '1 Woche' },
+    { seconds: 15, label: '4/minute' },
+    { seconds: 60, label: '1 minute' },
+    { seconds: 600, label: '10 minutes' },
+    { seconds: 3600, label: '1 hour' },
+    { seconds: 3600*24, label: '1 day' },
+    { seconds: 3600*24*7, label: '1 week' },
   ];
 
   framerates = [
