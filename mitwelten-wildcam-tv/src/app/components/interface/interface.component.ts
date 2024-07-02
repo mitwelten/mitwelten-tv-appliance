@@ -67,6 +67,21 @@ export class InterfaceComponent implements OnInit {
       ],
     },
     {
+      deployment: 1215,
+      period_start: new Date('2023-05-04'),
+      period_end: new Date('2023-11-17'),
+      title: 'Gleishof',
+      title_de: 'Gleishof',
+      group: 'Dreispitz',
+      framerate: 2,
+      interval: undefined,
+      phase: undefined,
+      landscape: true,
+      phases: [
+        { phase_start: 0, phase_end: 24 },
+      ],
+    },
+    {
       deployment: 1901,
       period_start: new Date('2023-07-05'),
       period_end: new Date('2023-08-22'),
