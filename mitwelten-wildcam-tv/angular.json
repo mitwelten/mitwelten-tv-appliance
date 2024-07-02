@@ -101,5 +101,8 @@
         "sourceLocale": "de-CH"
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
