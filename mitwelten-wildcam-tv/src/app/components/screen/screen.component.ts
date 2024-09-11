@@ -71,17 +71,19 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
         let fi = i + initIndex; // fetchIndex
         if (fi < 0) fi = 0;
         if (fi >= this.stack.length-1) fi = this.stack.length-1;
-        this.loaders[fi] = this.loadImage(i, this.stack[fi].object_name).subscribe(complete => {
-          preloaded++;
-          if (preloaded === this.preLoadCount) {
-            // debug view for preloaded images
-            // for (let i of this.images) {
-            //   document.getElementById('dbgimg')?.appendChild(i)
-            // }
-            // initialise WebGL context
-            this.ngZone.runOutsideAngular(() => {
-              if (!this.initialised) this.initContext();
-            });
+        this.loaders[fi] = this.loadImage(i, this.stack[fi].object_name).subscribe({
+          complete: () => {
+            preloaded++;
+            if (preloaded === this.preLoadCount) {
+              // debug view for preloaded images
+              // for (let i of this.images) {
+              //   document.getElementById('dbgimg')?.appendChild(i)
+              // }
+              // initialise WebGL context
+              this.ngZone.runOutsideAngular(() => {
+                if (!this.initialised) this.initContext();
+              });
+            }
           }
         });
       }
@@ -98,13 +100,13 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       switchMap(blob => {
         // onload: one eventlistener, simple override
         return new Observable<number>(observer => {
-          const blobUrl = URL.createObjectURL(blob);
-          this.images[index].onload = () => {
-            URL.revokeObjectURL(blobUrl); // TEST: remove this line
-            observer.next(index);
-            observer.complete();
-          };
-          this.images[index].src = blobUrl;
+          if (!this.images[index].onload) {
+            this.images[index].onload = () => {
+              observer.complete();
+            };
+          }
+          if (this.images[index].src) URL.revokeObjectURL(this.images[index].src);
+          this.images[index].src = URL.createObjectURL(blob);
         });
       })
     );
