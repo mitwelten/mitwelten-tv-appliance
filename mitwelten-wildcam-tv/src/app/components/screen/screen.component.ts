@@ -5,38 +5,57 @@ import { StackImage } from '../../shared/stack-image.type';
 import { DataService } from '../../services/data.service';
 import { CommonModule } from '@angular/common';
 
+const DEBUG = false;
+
 class ResourceLoader {
 
   private subscription?: Subscription;
+  private _target?: StackImage;
+  private _image: HTMLImageElement = new Image();
 
   public complete: Subject<boolean> = new Subject();
-  public image: HTMLImageElement = new Image();
-  public url = '';
+  public dbg?: HTMLDivElement;
 
   constructor(
     private dataService: DataService,
     private images: HTMLImageElement[],
     public index: number,
   ) {
-    this.image.addEventListener('load', () => {
-      this.images[this.index] = this.image;
+    this._image.addEventListener('load', () => {
+      this.images[this.index] = this._image;
+      if (DEBUG) this.dbg!.innerText = this.index.toString() + ' \n' + this._target?.object_name.substring(this._target?.object_name.lastIndexOf('/'));
       this.complete.next(true);
     });
+    if (DEBUG) {
+      this.dbg = document.createElement('div');
+      this.dbg.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+      this.dbg.style.padding = '10px';
+      this.dbg.innerText = index.toString();
+    }
   }
 
-  load(url: string) {
-    this.url = url;
+  load(target: StackImage) {
+    this._target = target;
     if (this.subscription && !this.subscription.closed) {
       console.warn('cancelling previous loader', 'this.subscription.unsubscribe();');
       this.subscription.unsubscribe();
     }
-    this.subscription = this.dataService.getImageResource(url).subscribe({
+    if (this._target) this.subscription = this.dataService.getImageResource(this._target.object_name).subscribe({
       next: (blob) => {
-        if (this.image.src) URL.revokeObjectURL(this.image.src);
-        this.image.src = URL.createObjectURL(blob);
+        if (this._image.src) URL.revokeObjectURL(this._image.src);
+        this._image.src = URL.createObjectURL(blob);
       }
     });
   }
+
+  public get target() {
+    return this._target;
+  }
+
+  public get image() {
+    return this._image;
+  }
+
 }
 
 @Component({
@@ -51,10 +70,14 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('screen', {static: true})
   screen?: ElementRef<HTMLCanvasElement>;
 
+  @ViewChild('countdown')
+  countdown?: ElementRef<HTMLDivElement>;
+
   private preLoadCount = 10;
   private initialised = false;
   private stackChanged = true;
-  private framerate = 1; // images per second
+  /** Framerate: still-images per second (render framerate is always 60fps */
+  private framerate = 1;
   private landscape = true;
   private destroy = new Subject();
   private stack: StackImage[] = []; // urls / meta info for all images in selection
@@ -95,6 +118,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       filter(stack => stack.length > 0),
     ).subscribe((stack) => {
       this.stack = stack;
+      if (DEBUG) console.log('stack changed', stack[0].time, stack[stack.length-1].time);
       this.stackChanged = true;
       // this.glFrames = this.stack.length; // bring this back once testing is done, stack is subject to change
 
@@ -104,14 +128,19 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
           let fi = i + initIndex; // fetchIndex
           if (fi < 0) fi = 0;
           if (fi >= this.stack.length-1) fi = this.stack.length-1;
-          this.loaders[i].load(this.stack[fi].object_name);
+          this.loaders[i].load(this.stack[fi]);
         }
       }
       const collective = zip(...this.loaders.map(rl => rl.complete)).subscribe(() => {
         collective.unsubscribe();
-        // debug view for preloaded images
-        for (let i of this.images) {
-          document.getElementById('dbgimg')?.appendChild(i)
+        if (DEBUG) {
+          // debug view for preloaded images
+          for (let i of this.images) {
+            document.getElementById('dbgimg')?.appendChild(i)
+          }
+          for (let l of this.loaders) {
+            document.getElementById('dbgtbl')?.appendChild(l.dbg!);
+          }
         }
         // initialise WebGL context
         this.ngZone.runOutsideAngular(() => {
@@ -229,12 +258,15 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
     gl.uniform1f(u_scale_location, Math.pow(1917 / 1440, 2)); // approx (16/9)^2
     gl.uniform1f(u_offset_location, 1 - (1 / Math.pow(1917 / 1440, 2))); // = 1 - 1/u_scale, offset to upper edge
 
-    let stackIndex = 0;
-    let lastIndex = -1;
-    let fetchIndex = 9;
+    /** previous pos_1 */
+    let last_pos_1 = -1;
+
     let fade = 0;
     let glFrame = 0;
+    /** countdown for switch to new stack */
     let reloadDelta = 0;
+    /** shift fetchIndex (needed when switching to new stack) */
+    let readOffset = 0;
     // let startTime: number|undefined = undefined;
 
     const loadTexture = (index: number, image: HTMLImageElement) => {
@@ -247,44 +279,64 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       if (this.stackChanged) { // reset animation when new stack is loaded
         // startTime = undefined;
         if (this.initialised) reloadDelta = 10;
+        else this.initialised = true;
         this.stackChanged = false;
         gl.uniform1f(u_rotate_location, this.landscape ? 0.0 : 1.0);
       }
       // if (startTime === undefined) startTime = time;
       // const progress = (time - startTime) / 250.; // test with time instead of frame
       const progress = glFrame / 60.;
-      stackIndex = (Math.floor(progress) % this.stack.length);
+      const progress_int = Math.floor(progress);
       fade = progress % 1.;
-      const pos_1 = (stackIndex + 0) % 10;
-      const pos_2 = (stackIndex + 1) % 10;
-      const load  = (stackIndex + 9) % 10;
 
-      if (stackIndex !== lastIndex && this.stack.length) {
+      /** current position in loaders */
+      const pos_1 = (progress_int + 0) % 10;
+      /** fade to this position in loaders */
+      const pos_2 = (progress_int + 1) % 10;
+      /** loading to this position in loaders */
+      const load  = (progress_int + 9) % 10;
+
+      if (pos_1 !== last_pos_1 && this.stack.length) {
+        if (DEBUG) console.log(`---\tpos_1:\t${pos_1},\tprogress:\t${progress_int},\tsl:\t${this.stack.length},\trd:\t${reloadDelta}`);
         if (reloadDelta > 0) {
+          if (reloadDelta === 10) readOffset = (progress_int + 9);
           if (reloadDelta === 1) {
-            // do i need offset into the loaders array?
-            console.log(`switch stack (${pos_1}, ${pos_2}, ${load})\n\tpos_1:\t${this.loaders[pos_1].url},\n\tpos_2:\t${this.loaders[pos_2].url},\n\tload:\t${this.loaders[load].url}`);
-            glFrame = 0;
+            if (DEBUG) console.log(`\tswitch stack`);
           }
+          if (DEBUG) console.log(`\tl: ${load},\t1: ${pos_1},\t2: ${pos_2},\tro: ${readOffset}`);
           reloadDelta--;
+          if (this.countdown) {
+            if (reloadDelta > 0) {
+              this.countdown.nativeElement.innerText = `${reloadDelta - 1}`;
+              this.countdown.nativeElement.style.display = 'block';
+              this.countdown.nativeElement.style.width = `${10 * (11 - reloadDelta)}%`;
+            } else {
+              this.countdown.nativeElement.style.display = 'none';
+            }
+          }
         }
+        if (DEBUG) console.log(`\tpos_1:\t${pos_1},\tprogress:\t${progress_int},\tsl:\t${this.stack.length},\trd:\t${reloadDelta}`);
         // debug view for preloaded images
-        this.loaders.forEach(rl => {
+        if (DEBUG) this.loaders.forEach(rl => {
           rl.image.style.border = '4px solid black';
           if (rl.index === pos_1) rl.image.style.border = '4px solid red';
           if (rl.index === pos_2) rl.image.style.border = '4px solid orange';
           if (rl.index === load) rl.image.style.border = '4px solid green';
         });
-        fetchIndex = (stackIndex + 8) % this.stack.length;
-        lastIndex = stackIndex;
-        const loadIndex = load % 10;
-        this.loaders[loadIndex].load(this.stack[fetchIndex].object_name);
+
+        last_pos_1 = pos_1;
+
+        const i_r_stack = ((progress_int + 9) - readOffset) % this.stack.length;
+        if (DEBUG) console.log(`\tstack ${i_r_stack} -> loader ${load}`);
+        this.loaders[load].load(this.stack[i_r_stack]);
 
         loadTexture(0, this.images[pos_1]);
         loadTexture(1, this.images[pos_2]);
 
-        this.currentImage.object_name = this.stack[stackIndex].object_name;
-        this.currentImage.time = this.stack[stackIndex].time;
+        if (this.loaders[pos_1].target) {
+          if (DEBUG) this.currentImage.object_name = this.loaders[pos_1].target!.object_name;
+          this.currentImage.time = this.loaders[pos_1].target!.time;
+        }
         this.cd.detectChanges();
       }
 
@@ -295,7 +347,6 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       // TODO: adjust framerate based on delta to next image
       glFrame += this.framerate;
     };
-    this.initialised = true;
     requestAnimationFrame(render);
   }
 }
