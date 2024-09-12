@@ -45,7 +45,7 @@ canvas {
 #dbgimg {
   position: fixed;
   top: 50%;
-  bottom: 24%;
+  bottom: 0;
   left: 0;
   right: 0;
   display: grid;
@@ -53,3 +53,6 @@ canvas {
   grid-template-rows: 1fr 1fr;
 }
 
+#dbgimg img {
+  border: 4px solid black;
+}

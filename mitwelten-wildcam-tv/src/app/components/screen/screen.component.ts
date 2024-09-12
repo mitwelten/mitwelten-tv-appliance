@@ -1,9 +1,43 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subject, Subscription, filter, switchMap, takeUntil } from 'rxjs';
+import { Subject, Subscription, filter, takeUntil, zip } from 'rxjs';
 import { StackService } from '../../services/stack.service';
 import { StackImage } from '../../shared/stack-image.type';
 import { DataService } from '../../services/data.service';
 import { CommonModule } from '@angular/common';
+
+class ResourceLoader {
+
+  private subscription?: Subscription;
+
+  public complete: Subject<boolean> = new Subject();
+  public image: HTMLImageElement = new Image();
+  public url = '';
+
+  constructor(
+    private dataService: DataService,
+    private images: HTMLImageElement[],
+    public index: number,
+  ) {
+    this.image.addEventListener('load', () => {
+      this.images[this.index] = this.image;
+      this.complete.next(true);
+    });
+  }
+
+  load(url: string) {
+    this.url = url;
+    if (this.subscription && !this.subscription.closed) {
+      console.warn('cancelling previous loader', 'this.subscription.unsubscribe();');
+      this.subscription.unsubscribe();
+    }
+    this.subscription = this.dataService.getImageResource(url).subscribe({
+      next: (blob) => {
+        if (this.image.src) URL.revokeObjectURL(this.image.src);
+        this.image.src = URL.createObjectURL(blob);
+      }
+    });
+  }
+}
 
 @Component({
   selector: 'app-screen',
@@ -24,7 +58,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
   private landscape = true;
   private destroy = new Subject();
   private stack: StackImage[] = []; // urls / meta info for all images in selection
-  private loaders: Subscription[] = new Array(10);
+  private loaders: ResourceLoader[] = [];
   private images: HTMLImageElement[] = []; // the image preload / display stack
 
   public currentImage = {object_name: '', time: ''};
@@ -36,9 +70,8 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
     private stackService: StackService,
   ) {
     this.cd.detach();
-    for (let i = 0; i < 10; i++) {
-      const img = new Image();
-      this.images.push(img);
+    for (let i = 0; i < this.preLoadCount; i++) {
+      this.loaders.push(new ResourceLoader(dataService, this.images, i));
     }
   }
 
@@ -65,51 +98,32 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       this.stackChanged = true;
       // this.glFrames = this.stack.length; // bring this back once testing is done, stack is subject to change
 
-      const initIndex = 1;
-      let preloaded = 0;
-      for (let i = 0; i < this.preLoadCount; i++) {
-        let fi = i + initIndex; // fetchIndex
-        if (fi < 0) fi = 0;
-        if (fi >= this.stack.length-1) fi = this.stack.length-1;
-        this.loaders[fi] = this.loadImage(i, this.stack[fi].object_name).subscribe({
-          complete: () => {
-            preloaded++;
-            if (preloaded === this.preLoadCount) {
-              // debug view for preloaded images
-              // for (let i of this.images) {
-              //   document.getElementById('dbgimg')?.appendChild(i)
-              // }
-              // initialise WebGL context
-              this.ngZone.runOutsideAngular(() => {
-                if (!this.initialised) this.initContext();
-              });
-            }
-          }
-        });
+      if (!this.initialised) {
+        const initIndex = 0;
+        for (let i = 0; i < this.preLoadCount; i++) {
+          let fi = i + initIndex; // fetchIndex
+          if (fi < 0) fi = 0;
+          if (fi >= this.stack.length-1) fi = this.stack.length-1;
+          this.loaders[i].load(this.stack[fi].object_name);
+        }
       }
+      const collective = zip(...this.loaders.map(rl => rl.complete)).subscribe(() => {
+        collective.unsubscribe();
+        // debug view for preloaded images
+        for (let i of this.images) {
+          document.getElementById('dbgimg')?.appendChild(i)
+        }
+        // initialise WebGL context
+        this.ngZone.runOutsideAngular(() => {
+          if (!this.initialised) this.initContext();
+        });
+      });
     });
   }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
-  }
-
-  private loadImage(index: number, url: string) {
-    return this.dataService.getImageResource(url).pipe(
-      switchMap(blob => {
-        // onload: one eventlistener, simple override
-        return new Observable<number>(observer => {
-          if (!this.images[index].onload) {
-            this.images[index].onload = () => {
-              observer.complete();
-            };
-          }
-          if (this.images[index].src) URL.revokeObjectURL(this.images[index].src);
-          this.images[index].src = URL.createObjectURL(blob);
-        });
-      })
-    );
   }
 
   private initContext(): void {
@@ -217,10 +231,11 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
 
     let stackIndex = 0;
     let lastIndex = -1;
-    let fetchIndex = 0;
+    let fetchIndex = 9;
     let fade = 0;
     let glFrame = 0;
-    let startTime: number|undefined = undefined;
+    let reloadDelta = 0;
+    // let startTime: number|undefined = undefined;
 
     const loadTexture = (index: number, image: HTMLImageElement) => {
       if (gl === undefined) throw new Error('no gl context');
@@ -230,32 +245,41 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
 
     const render = (time: number) => {
       if (this.stackChanged) { // reset animation when new stack is loaded
-        stackIndex = 0;
-        lastIndex = -1;
-        fetchIndex = 0;
-        fade = 0;
-        glFrame = 0;
-        startTime = undefined;
+        // startTime = undefined;
+        if (this.initialised) reloadDelta = 10;
         this.stackChanged = false;
         gl.uniform1f(u_rotate_location, this.landscape ? 0.0 : 1.0);
       }
-      if (startTime === undefined) startTime = time;
+      // if (startTime === undefined) startTime = time;
       // const progress = (time - startTime) / 250.; // test with time instead of frame
       const progress = glFrame / 60.;
       stackIndex = (Math.floor(progress) % this.stack.length);
       fade = progress % 1.;
-      const pos_1 = (stackIndex + 4) % 10;
-      const pos_2 = (stackIndex + 5) % 10;
+      const pos_1 = (stackIndex + 0) % 10;
+      const pos_2 = (stackIndex + 1) % 10;
       const load  = (stackIndex + 9) % 10;
 
       if (stackIndex !== lastIndex && this.stack.length) {
-        fetchIndex = (stackIndex + 4) % this.stack.length;
+        if (reloadDelta > 0) {
+          if (reloadDelta === 1) {
+            // do i need offset into the loaders array?
+            console.log(`switch stack (${pos_1}, ${pos_2}, ${load})\n\tpos_1:\t${this.loaders[pos_1].url},\n\tpos_2:\t${this.loaders[pos_2].url},\n\tload:\t${this.loaders[load].url}`);
+            glFrame = 0;
+          }
+          reloadDelta--;
+        }
+        // debug view for preloaded images
+        this.loaders.forEach(rl => {
+          rl.image.style.border = '4px solid black';
+          if (rl.index === pos_1) rl.image.style.border = '4px solid red';
+          if (rl.index === pos_2) rl.image.style.border = '4px solid orange';
+          if (rl.index === load) rl.image.style.border = '4px solid green';
+        });
+        fetchIndex = (stackIndex + 8) % this.stack.length;
         lastIndex = stackIndex;
         const loadIndex = load % 10;
-        if (this.loaders[loadIndex] && !this.loaders[loadIndex].closed) {
-          this.loaders[loadIndex].unsubscribe();
-        }
-        this.loaders[loadIndex] = this.loadImage(loadIndex, this.stack[fetchIndex].object_name).subscribe();
+        this.loaders[loadIndex].load(this.stack[fetchIndex].object_name);
+
         loadTexture(0, this.images[pos_1]);
         loadTexture(1, this.images[pos_2]);
 
@@ -271,6 +295,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
       // TODO: adjust framerate based on delta to next image
       glFrame += this.framerate;
     };
+    this.initialised = true;
     requestAnimationFrame(render);
   }
 }
