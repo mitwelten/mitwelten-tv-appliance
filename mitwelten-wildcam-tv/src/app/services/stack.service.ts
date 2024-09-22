@@ -5,6 +5,8 @@ import { ReplaySubject, distinctUntilChanged, map, tap } from 'rxjs';
 import { StackImage } from '../shared/stack-image.type';
 import { HttpClient } from '@angular/common/http';
 import { StackQuery } from '../shared/stack-query.type';
+import { InterfaceService } from './interface.service';
+import { selections } from '../shared/selections';
 
 
 @Injectable({
@@ -46,9 +48,11 @@ export class StackService {
 
   constructor(
     private dataService: DataService,
+    private interfaceService: InterfaceService,
     private http: HttpClient
   ) {
     this.selectionCriteria.valueChanges.pipe(
+      tap(() => this.interfaceService.resetTimeout()),
       tap(() => {
         this.framerate.next(this.selectionCriteria.value.framerate);
         this.landscape.next(this.selectionCriteria.value.landscape);
