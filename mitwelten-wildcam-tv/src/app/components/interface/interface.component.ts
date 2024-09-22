@@ -10,6 +10,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipListbox, MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { StackService } from '../../services/stack.service';
+import { InterfaceService } from '../../services/interface.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
@@ -44,6 +45,7 @@ export class InterfaceComponent implements OnInit {
   listboxes?: QueryList<MatChipListbox>;
 
   constructor(
+    public interfaceService: InterfaceService,
     public stackService: StackService,
   ) {}
 
