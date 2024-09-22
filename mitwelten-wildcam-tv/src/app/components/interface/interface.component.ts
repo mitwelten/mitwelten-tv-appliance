@@ -8,6 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipListbox, MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { StackService } from '../../services/stack.service';
 import { InterfaceService } from '../../services/interface.service';
@@ -29,6 +30,7 @@ import { selections } from '../../shared/selections';
     MatDatepickerModule,
     MatInputModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
     DragDropModule,
     MatChipsModule,

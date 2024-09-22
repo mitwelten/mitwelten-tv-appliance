@@ -97,6 +97,8 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <!-- <button color="accent" mat-button type="reset" (click)="define_selection.reset()">Reset</button> -->
+    <mat-progress-spinner mode="determinate" [value]="interfaceService.remaining | async" diameter="16">
+    </mat-progress-spinner>
     <button color="accent" mat-button mat-dialog-close>Close</button>
   </mat-dialog-actions>
 </div>
