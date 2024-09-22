@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { InterfaceComponent } from './components/interface/interface.component';
 import { MatButtonModule } from '@angular/material/button';
 import { InterfaceService } from './services/interface.service';
+import { FreerunService } from './services/freerun.service';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +21,13 @@ export class AppComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private interfaceService: InterfaceService,
-
+    public freeRunService: FreerunService,
   ) {}
 
   ngOnInit(): void {
     // this.openInterface();
+    this.freeRunService.trigger.subscribe(() => this.interfaceService.interface?.close());
+    this.freeRunService.startCountdown();
   }
 
   @HostListener('document:keydown.esc')

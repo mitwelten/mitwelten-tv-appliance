@@ -6,6 +6,7 @@ import { StackImage } from '../shared/stack-image.type';
 import { HttpClient } from '@angular/common/http';
 import { StackQuery } from '../shared/stack-query.type';
 import { InterfaceService } from './interface.service';
+import { FreerunService } from './freerun.service';
 import { selections } from '../shared/selections';
 
 
@@ -49,6 +50,7 @@ export class StackService {
   constructor(
     private dataService: DataService,
     private interfaceService: InterfaceService,
+    private freeRunService: FreerunService,
     private http: HttpClient
   ) {
     this.selectionCriteria.valueChanges.pipe(
@@ -66,6 +68,11 @@ export class StackService {
       if (this.selectionCriteria.valid) {
         this.loadStack();
       }
+    });
+
+    this.freeRunService.trigger.subscribe(() => {
+      const randomSelection = selections[Math.floor(Math.random() * selections.length)];
+      this.selectionCriteria.patchValue(randomSelection);
     });
   }
 

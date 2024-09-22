@@ -4,6 +4,7 @@ import { StackService } from '../../services/stack.service';
 import { StackImage } from '../../shared/stack-image.type';
 import { DataService } from '../../services/data.service';
 import { CommonModule } from '@angular/common';
+import { FreerunService } from '../../services/freerun.service';
 
 const DEBUG = false;
 
@@ -91,6 +92,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private dataService: DataService,
     private stackService: StackService,
+    private freeRunService: FreerunService,
   ) {
     this.cd.detach();
     for (let i = 0; i < this.preLoadCount; i++) {
@@ -278,7 +280,10 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
     const render = (time: number) => {
       if (this.stackChanged) { // reset animation when new stack is loaded
         // startTime = undefined;
-        if (this.initialised) reloadDelta = 10;
+        if (this.initialised) {
+          reloadDelta = 10;
+          this.freeRunService.pauseCountdown();
+        }
         else this.initialised = true;
         this.stackChanged = false;
         gl.uniform1f(u_rotate_location, this.landscape ? 0.0 : 1.0);
@@ -302,6 +307,8 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
           if (reloadDelta === 10) readOffset = (progress_int + 9);
           if (reloadDelta === 1) {
             if (DEBUG) console.log(`\tswitch stack`);
+            this.freeRunService.resetCountdown((this.stack.length - 10) / this.framerate); // schedule switch at loop point
+            this.freeRunService.resumeCountdown();
           }
           if (DEBUG) console.log(`\tl: ${load},\t1: ${pos_1},\t2: ${pos_2},\tro: ${readOffset}`);
           reloadDelta--;
@@ -327,6 +334,7 @@ export class ScreenComponent implements AfterViewInit, OnInit, OnDestroy {
         last_pos_1 = pos_1;
 
         const i_r_stack = ((progress_int + 9) - readOffset) % this.stack.length;
+        if (!i_r_stack && DEBUG) console.log("loop condition", progress_int, readOffset, i_r_stack);
         if (DEBUG) console.log(`\tstack ${i_r_stack} -> loader ${load}`);
         this.loaders[load].load(this.stack[i_r_stack]);
 
